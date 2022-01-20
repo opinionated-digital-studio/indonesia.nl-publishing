@@ -1,0 +1,33 @@
+{
+  "name": "indonesia.nl-publishing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "prettier": "^2.5.1"
+  },
+  "dependencies": {
+    "fp-ts": "^2.11.8",
+    "hyper-ts": "^0.7.6",
+    "io-ts": "^2.2.16",
+    "mongoose": "^6.1.7",
+    "monocle-ts": "^2.3.12",
+    "newtype-ts": "^0.3.5",
+    "typescript": "^4.5.4"
+  }
+}
