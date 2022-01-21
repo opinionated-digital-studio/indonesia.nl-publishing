@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/lib/function'
 import * as M from 'hyper-ts/lib/ReaderMiddleware'
-import { decodeBody, decodeParam } from '../../common/controller/decoder'
+import { decodeBody, decodeParam } from '../../../common/controller/decoder'
 import {
   badRequest,
   internalServerError,
   json
-} from '../../common/controller/http-response'
+} from '../../../common/controller/http-response'
 import { PostNewsBody, PostNewsParam } from '../news.decoder'
 import { addNews } from '../news.service'
 
