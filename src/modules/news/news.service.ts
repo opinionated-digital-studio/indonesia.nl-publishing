@@ -3,7 +3,19 @@ import { News } from './news.model'
 import * as TE from 'fp-ts/TaskEither'
 import { toDbError } from '../../common/errors/DbError'
 
+export interface NewsServiceDeps {
+  newsModel: Model<News>
+}
+
 export const addNews =
   (news: News) =>
-  ({ model }: { model: Model<News> }) =>
-    TE.tryCatch(() => model.create(news), toDbError)
+  ({ newsModel }: NewsServiceDeps) =>
+    TE.tryCatch(() => newsModel.create(news), toDbError)
+
+export const getNews =
+  (lang: 'id' | 'en') =>
+  ({ newsModel }: NewsServiceDeps) =>
+    TE.tryCatch(
+      async () => newsModel.find({ lang }).sort({ date: 'desc' }),
+      toDbError
+    )

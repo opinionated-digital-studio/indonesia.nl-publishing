@@ -9,7 +9,7 @@ export interface News {
   date?: Number
 }
 
-const News = pipe(
+export const News = pipe(
   new Schema<News>({
     lang: {
       type: String,
