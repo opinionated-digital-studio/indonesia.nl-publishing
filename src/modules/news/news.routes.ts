@@ -1,13 +1,18 @@
 import { Router } from 'express'
 import { NewsServiceDeps } from './news.service'
 import { toRequestHandler } from 'hyper-ts/lib/express'
-import { postNewsHandler } from './handlers/post-news'
-import { getNewsHandler } from './handlers/get-news'
+import {
+  getNewsHandler,
+  postNewsHandler,
+  updateNewsHandler
+} from './news.handlers'
 
 export const registerNewsRoutes = (deps: NewsServiceDeps) => {
   const router = Router()
 
   router.get('/:lang', toRequestHandler(getNewsHandler(deps)))
+
+  router.patch('/:id', toRequestHandler(updateNewsHandler(deps)))
 
   router.post('/:lang', toRequestHandler(postNewsHandler(deps)))
 

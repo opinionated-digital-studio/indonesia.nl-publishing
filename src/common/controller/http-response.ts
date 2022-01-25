@@ -22,3 +22,10 @@ export const internalServerError = (msg?: string) =>
     M.ichain(() => M.closeHeaders()),
     M.ichainW(() => M.send(msg || 'Internal server error'))
   )
+
+export const notFound = (msg?: string) =>
+  pipe(
+    M.status(H.Status.NotFound),
+    M.ichain(() => M.closeHeaders()),
+    M.ichainW(() => M.send(msg || 'Not found'))
+  )

@@ -1,10 +1,5 @@
 import * as t from 'io-ts'
 
-export const PostNewsParam = t.keyof({
-  id: null,
-  en: null
-})
-
 export const PostNewsBody = t.intersection([
   t.type({
     title: t.string,
@@ -17,3 +12,12 @@ export const PostNewsBody = t.intersection([
 ])
 
 export type PostNewsBody = t.TypeOf<typeof PostNewsBody>
+
+export const UpdateNewsBody = t.partial({
+  title: t.string,
+  href: t.string,
+  date: t.number,
+  img: t.string
+})
+
+export const UpdateNewsParam = t.string

@@ -8,3 +8,6 @@ export const decodeBody = <A>(t: Type<A>) =>
 
 export const decodeParam = <A>(key: string, t: Type<A>) =>
   pipe(M.decodeParam(key, t.decode), M.mapLeft(toDecodingError))
+
+export const decodeParams = <A>(t: Type<A>) =>
+  pipe(M.decodeParams(t.decode), M.mapLeft(toDecodingError))
