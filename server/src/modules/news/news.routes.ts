@@ -6,8 +6,9 @@ import {
   postNewsHandler,
   updateNewsHandler
 } from './news.handlers'
+import { UserServiceDeps } from '../users/users.service'
 
-export const registerNewsRoutes = (deps: NewsServiceDeps) => {
+export const registerNewsRoutes = (deps: NewsServiceDeps & UserServiceDeps) => {
   const router = Router()
 
   router.get('/:lang', toRequestHandler(getNewsHandler(deps)))

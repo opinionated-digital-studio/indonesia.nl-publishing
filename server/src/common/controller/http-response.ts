@@ -29,3 +29,10 @@ export const notFound = (msg?: string) =>
     M.ichain(() => M.closeHeaders()),
     M.ichainW(() => M.send(msg || 'Not found'))
   )
+
+export const unauthorized = (msg?: string) =>
+  pipe(
+    M.status(H.Status.Unauthorized),
+    M.ichain(() => M.closeHeaders()),
+    M.ichainW(() => M.send(msg || 'Unauthorized'))
+  )

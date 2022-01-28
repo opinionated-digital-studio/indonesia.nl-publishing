@@ -7,12 +7,15 @@ import {
   badRequest,
   internalServerError,
   json,
-  notFound
+  notFound,
+  unauthorized
 } from '../../common/controller/http-response'
 import { PostNewsBody, UpdateNewsBody, UpdateNewsParam } from './news.decoder'
+import { requireAuth } from '../users/users.handlers'
 
 export const getNewsHandler = pipe(
-  decodeParam('lang', LangParam),
+  requireAuth,
+  M.ichainW(() => decodeParam('lang', LangParam)),
   M.ichainW(flow(getNews, M.fromReaderTaskEither)),
   M.ichainW(json),
   M.orElseW((error) => {
@@ -21,6 +24,8 @@ export const getNewsHandler = pipe(
         return internalServerError()
       case 'DecodingError':
         return badRequest(error.errors)
+      case 'UnauthorizedError':
+        return unauthorized()
       default:
         return internalServerError()
     }
@@ -28,22 +33,27 @@ export const getNewsHandler = pipe(
 )
 
 export const postNewsHandler = pipe(
-  M.bindTo('body')(decodeBody(PostNewsBody)),
-  M.bind('lang', () => decodeParam('lang', LangParam)),
-  M.ichainW((decoded) =>
+  requireAuth,
+  M.ichainW(() =>
     pipe(
-      addNews({
-        ...decoded.body,
-        lang: decoded.lang
-      }),
-      M.fromReaderTaskEither
+      M.bindTo('body')(decodeBody(PostNewsBody)),
+      M.bind('lang', () => decodeParam('lang', LangParam)),
+      M.ichainW((decoded) =>
+        pipe(
+          addNews({
+            ...decoded.body,
+            lang: decoded.lang
+          }),
+          M.fromReaderTaskEither
+        )
+      )
     )
   ),
   M.ichainW(json),
   M.orElseW((error) => {
     switch (error._tag) {
-      case 'DbError':
-        return internalServerError()
+      case 'UnauthorizedError':
+        return unauthorized()
       case 'DecodingError':
         return badRequest(error.errors)
       default:
@@ -53,16 +63,23 @@ export const postNewsHandler = pipe(
 )
 
 export const updateNewsHandler = pipe(
-  M.bindTo('id')(decodeParam('id', UpdateNewsParam)),
-  M.bind('body', () => decodeBody(UpdateNewsBody)),
-  M.ichainW((decoded) =>
-    pipe(decoded.body, updateNews(decoded.id), M.fromReaderTaskEither)
+  requireAuth,
+  M.ichainW(() =>
+    pipe(
+      M.bindTo('id')(decodeParam('id', UpdateNewsParam)),
+      M.bind('body', () => decodeBody(UpdateNewsBody)),
+      M.ichainW((decoded) =>
+        pipe(decoded.body, updateNews(decoded.id), M.fromReaderTaskEither)
+      )
+    )
   ),
   M.ichainW(json),
   M.orElseW((error) => {
     switch (error._tag) {
       case 'NewsItemNotFound':
         return notFound('News item with ID not found')
+      case 'UnauthorizedError':
+        return unauthorized()
       case 'DecodingError':
         return badRequest(error.errors)
       default:

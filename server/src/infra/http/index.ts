@@ -1,13 +1,15 @@
 import express from 'express'
+import { appConfig } from '../../config'
 import { router } from './routes'
 
 const app = express()
+const port = appConfig.port
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api', router)
 
-app.listen(3000, () => {
-  console.log('App listening on port 3000')
+app.listen(port, () => {
+  console.log('App listening on port ' + port)
 })

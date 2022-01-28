@@ -5,6 +5,10 @@ import * as t from 'io-ts'
 
 config()
 
+export const appConfig = {
+  port: process.env.PORT || 5000
+}
+
 const dbEnvDecoder = t.type({
   username: t.string,
   password: t.string,
@@ -38,3 +42,9 @@ export const makeDbConfig = () => {
 }
 
 export const dbConnectionString = makeDbConfig()
+
+export const OAuthConfig = {
+  usersEndpoint: 'https://www.googleapis.com/oauth2/v2/userinfo'
+}
+
+export type OAuthConfig = typeof OAuthConfig
